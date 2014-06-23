@@ -1,0 +1,124 @@
+<!--
+/* * *************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2010 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ * ************************************************************* */
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	</head>
+	<body>
+
+		<!--Kategorien -->
+	  ###KATLIST###
+	  ###UEBERSICHT###
+		###KATNAME###
+		###BUECHER###
+        ###SPACER###
+	  ###KATLIST###
+		<!--/Kategorien -->
+
+		<!--Buchueberblick fuer die Liste mit den Kategorien-->
+	  ###BUCHUEBERBLICK###
+		<div class="listHighlight" onmouseover="$(this).addClass('illuminate')" onmouseout="$(this).removeClass('illuminate')">
+			<h3>###TITELLINK###</h3>
+	        <p>###IMG###
+			   ###AUTHOR###
+	           ###KURZBESCHREIBUNG###<br />
+	           ###RESTAURIERUNGSKOSTEN###: ###PREIS### Euro</p>
+		</div>
+		<div class="clear"></div>		
+	  ###BUCHUEBERBLICK###
+		<!--/Buchueberblick fuer die Liste mit den Kategorien-->
+
+
+		<!--Singleansicht eines Buches-->
+		###BUCHANSICHT###
+		<div class="single">
+            <h2>###CATEGORY###</h2>
+			<h3>###TITEL###</h3>
+			<p>
+                ###IMG1### ###AUTHOR######CAPTION###
+			</p>
+			<p>
+               <strong>###HEADER_SIGNATURE###:</strong> ###SIGNATURE###
+			</p>
+				###IMG2###
+				###DESCRIPTION###
+			<p>
+				###IMG3###<strong>###HEADER_ZUSTANDSBESCHREIBUNG###:</strong> ###DAMAGE###
+			</p>
+			<p>
+				<strong>###HEADER_HELP###</strong> ###HELP###
+			</p>
+			<p>
+				<strong>###HEADER_RESTAURIERUNGSKOSTEN###:</strong> ###PRICE### Euro
+			</p>
+			<p>
+    			###IWANT###
+			</p>
+			<p>
+			###BACK###
+			</p>
+		</div>
+		###BUCHANSICHT###
+		<!--/Singleansicht eines Buches-->
+
+
+		<!--Uebernommene Patenschaften-->
+		###UEBERNOMMENE###
+		<div class="single">
+			<h2>###CATEGORY###</h2>
+			<h3>###TITEL###</h3>
+			<p>
+                ###IMG1### ###AUTHOR######CAPTION###
+			</p>
+			<p>
+                <strong>###HEADER_SIGNATURE###:</strong> ###SIGNATURE###
+			</p>
+				###IMG2###
+                ###DESCRIPTION###
+			<p>
+				###IMG3###<strong>###HEADER_ZUSTANDSBESCHREIBUNG###:</strong> ###DAMAGE###
+			</p>
+			<p>
+				<strong>###HEADER_HELP###</strong> ###HELP###
+			</p>
+			<p>
+				<strong>###HEADER_RESTAURIERUNGSKOSTEN###:</strong> ###PRICE### Euro
+			</p>
+			<p>
+                <strong>###HEADER_SPONSOR###:</strong> ###SPONSOR###
+			</p>
+			<p>
+			###BACK###
+			</p>
+
+		</div>
+		###UEBERNOMMENE###
+		<!--/Uebernommene Patenschaften-->
+
+
+	</body>
+</html>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<T3DataStructure>
+	<ROOT>
+		<type>array</type>
+		<el>
+			<formwahl>
+				<TCEforms>
+					<label>Darstellung</label>
+					<config>
+						<type>select</type>
+						<items type="array">
+							<numIndex index="0" type="array">
+								<numIndex index="0">Listen- und Detailansicht</numIndex>
+								<numIndex index="1">listdetail</numIndex>
+							</numIndex>
+							<numIndex index="1" type="array">
+								<numIndex index="0">Formular: Select-Box</numIndex>
+								<numIndex index="1">form:select-box</numIndex>
+							</numIndex>
+							<numIndex index="2" type="array">
+								<numIndex index="0">Paten</numIndex>
+								<numIndex index="1">paten</numIndex>
+							</numIndex>
+							<numIndex index="3" type="array">
+								<numIndex index="0">Bereits uebernommene Patenschaften</numIndex>
+								<numIndex index="1">uebernommene</numIndex>
+							</numIndex>
+						</items>
+						<maxitems>1</maxitems>
+						<size>1</size>
+					</config>
+				</TCEforms>
+			</formwahl>
+		</el>
+	</ROOT>
+</T3DataStructure>
