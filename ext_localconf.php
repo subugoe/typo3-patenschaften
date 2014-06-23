@@ -33,7 +33,7 @@ t3lib_extMgm::addTypoScript($_EXTKEY, 'setup', '
 	tt_content.shortcut.20.0.conf.tx_patenschaften_buecher.CMD = singleView
 ', 43);
 
-$TYPO3_CONF_VARS['EXTCONF']['nkwsubmenu']['extendTOC'][$_EXTKEY] = 'EXT:'.$_EXTKEY.'/pi1/class.tx_patenschaften_pi1.php:tx_patenschaften_pi1->hookFunc';
-$TYPO3_CONF_VARS['EXTCONF']['nkwsubmenu']['addImages'][$_EXTKEY] = 'EXT:'.$_EXTKEY.'/pi1/class.tx_patenschaften_pi1.php:tx_patenschaften_pi1->hookPicFunc';
+$TYPO3_CONF_VARS['EXTCONF']['nkwsubmenu']['extendTOC'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/pi1/class.tx_patenschaften_pi1.php:tx_patenschaften_pi1->hookFunc';
+$TYPO3_CONF_VARS['EXTCONF']['nkwsubmenu']['addImages'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/pi1/class.tx_patenschaften_pi1.php:tx_patenschaften_pi1->hookPicFunc';
 
 ?>
