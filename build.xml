@@ -38,9 +38,8 @@
 			</sequential>
 			<antcall target="phpcpd"/>
 			<antcall target="phpcs"/>
-			<antcall target="phpdoc"/>
+			<antcall target="phpdox"/>
 			<antcall target="phploc"/>
-			<antcall target="jslint"/>
 		</parallel>
 	</target>
 	<target name="pdepend"
@@ -85,14 +84,8 @@
 			<arg path="${basedir}/"/>
 		</exec>
 	</target>
-	<target name="phpdoc"
-			description="Generate API documentation using PHPDocumentor">
-		<exec executable="phpdoc">
-			<arg value="--directory"/>
-			<arg path="${basedir}/"/>
-			<arg value="--target"/>
-			<arg path="${basedir}/build/api"/>
-		</exec>
+	<target name="phpdox" description="Generate API documentation using phpDox">
+		<exec executable="phpdox"/>
 	</target>
 	<target name="phpcb"
 			description="Aggregate tool output with PHP_CodeBrowser">
@@ -104,15 +97,5 @@
 			<arg value="--output"/>
 			<arg path="${basedir}/build/code-browser"/>
 		</exec>
-	</target>
-	<target name="jslint" description="Run the JSLint tool on JS files">
-	  <fileset dir="${basedir}/" id="jsfiles.raw">
-	    <include name="**/*.js" />
-	    <exclude name="**/*.min.js" />
-	  </fileset>
-	  <pathconvert pathsep=" " property="jsfiles.clean" refid="jsfiles.raw" />
-	  <exec executable="java" output="build/logs/jslint.xml">
-	    <arg line="-jar /home/ingop/libs/jslint4java.jar --report xml ${jsfiles.clean} --vars --sloppy" />
-	  </exec>
 	</target>
 </project>
