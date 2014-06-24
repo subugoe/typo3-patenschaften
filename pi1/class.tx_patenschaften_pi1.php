@@ -23,8 +23,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-require_once(PATH_tslib . 'class.tslib_pibase.php');
-
 /**
  * Plugin 'Buchpatenschaften' for the 'patenschaften' extension.
  *
@@ -58,7 +56,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 	 *
 	 * @param string $content : The content of the PlugIn
 	 * @param array $conf : The PlugIn Configuration
-	 * @return The content that should be displayed on the website
+	 * @return string The content that should be displayed on the website
 	 */
 	function main($content, $conf) {
 		// Setting the TypoScript passed to this function in $this->conf
@@ -98,7 +96,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 
 		switch ($form) {
 			case 'listdetail':
-				if (t3lib_div::testInt($parameter['showBook'])) {
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($parameter['showBook'])) {
 					$content = $this->singleView($parameter['showBook']);
 				} elseif (isset($parameter['category'])) {
 					$content = $this->catView($parameter['category']);
@@ -113,7 +111,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 				$content = $this->getPatenschaften();
 				break;
 			case 'uebernommene':
-				if (t3lib_div::testInt($parameter['showBook'])) {
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($parameter['showBook'])) {
 					$content = $this->getUebernommenePatenschaft($parameter['showBook']);
 				} else {
 					$content = $this->uebernommenePatenschaftListView();
@@ -181,7 +179,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 	 * Kopieren aus Unterordnern in ein gemeinsames Verzeichnis
 	 *
 	 * @param string $werte
-	 * @return void
+	 * @return string
 	 */
 	private function importiereBilder($werte) {
 		$alles = explode(';', $werte);
@@ -613,6 +611,8 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 
 			$bilder = explode(',', $row['bilder']);
 
+			$replacedImageMarkers = array();
+
 			// Bilder aufbereiten
 			$i = 1;
 			foreach ($bilder as $bild) {
@@ -628,10 +628,16 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 
 				$wrap = "<a href='" . $this->bilderpfad . $bild . "' rel='shadowbox[preview]' title='" . $row['titel'] . "'>|</a>";
 				$markerArray['###IMG' . $i . '###'] = $this->cObj->linkWrap($this->cObj->IMAGE($bildconf), $wrap);
+				$replacedImageMarkers[] = $i;
 				$i++;
 			}
 			// falls mal nur zwei Bilder vorhanden sind
 			(count($bilder) == 2) ? $markerArray['###IMG3###'] = '' : null;
+			if (count($replacedImageMarkers) < 2) {
+				$markerArray['###IMG2###'] = '';
+				$markerArray['###IMG3###'] = '';
+			}
+
 			$content = $this->cObj->substituteMarkerArrayCached($template, $markerArray);
 		}
 		return $content;
@@ -664,6 +670,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 	 * @return string Kategorien
 	 */
 	private function leseKatAusDb($id) {
+		$cat = '';
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'catname',
 				$this->kattabelle,
