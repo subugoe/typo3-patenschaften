@@ -27,6 +27,8 @@ RTE.config.tx_patenschaften_buecher.description {
 ');
 t3lib_extMgm::addPItoST43($_EXTKEY, 'pi1/class.tx_patenschaften_pi1.php', '_pi1', 'list_type', 0);
 
+Tx_Extbase_Utility_Extension::configurePlugin($_EXTKEY, 'detail', array('Index' => 'detail'));
+Tx_Extbase_Utility_Extension::configurePlugin($_EXTKEY, 'list', array('Index' => 'list'));
 
 t3lib_extMgm::addTypoScript($_EXTKEY, 'setup', '
 	tt_content.shortcut.20.0.conf.tx_patenschaften_buecher = < plugin.' . t3lib_extMgm::getCN($_EXTKEY) . '_pi1

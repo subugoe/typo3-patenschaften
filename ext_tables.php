@@ -21,7 +21,7 @@ $TCA['tx_patenschaften_kategorien'] = array(
 				'enablecolumns' => array(
 						'disabled' => 'hidden',
 				),
-				'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
+				'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Category.php',
 				'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'icon_tx_patenschaften_kategorien.gif',
 		),
 );
@@ -43,7 +43,7 @@ $TCA['tx_patenschaften_buecher'] = array(
 						'starttime' => 'starttime',
 						'endtime' => 'endtime',
 				),
-				'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'tca.php',
+				'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Book.php',
 				'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'icon_tx_patenschaften_buecher.gif',
 		),
 );
@@ -59,7 +59,10 @@ t3lib_extMgm::addPlugin(array(
 		t3lib_extMgm::extRelPath($_EXTKEY) . 'ext_icon.gif'
 ), 'list_type');
 
-t3lib_extMgm::addPiFlexFormValue($_EXTKEY . '_pi1', 'FILE:EXT:' . $_EXTKEY . '/flexform.xml');
+Tx_Extbase_Utility_Extension::registerPlugin($_EXTKEY, 'detail', 'Patenschaftsdetail');
+Tx_Extbase_Utility_Extension::registerPlugin($_EXTKEY, 'list', 'Patenschaftsliste');
 
-t3lib_extMgm::addStaticFile($_EXTKEY, 'pi1/static/', 'Buchpatenschaften');
+t3lib_extMgm::addPiFlexFormValue($_EXTKEY . '_pi1', 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForm/flexform.xml');
+
+t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript/', 'Buchpatenschaften');
 ?>

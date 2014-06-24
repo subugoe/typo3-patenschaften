@@ -1,0 +1,34 @@
+{namespace s=Tx_Patenschaften_ViewHelpers}
+<s:imageSplit values="{book.images}" />
+
+<div class="single">
+	<h2>{book.category.title}</h2>
+	<h3>{book.title}</h3>
+
+	<p>
+		<f:render partial="Image" arguments="{settings: settings, image: images.0, count: 0}" /> {book.author} {book.caption}
+	</p>
+	<p>
+		<strong><f:translate key="listFieldHeader_signature" />:</strong> {book.signature}
+	</p>
+	<p>
+	<f:render partial="Image" arguments="{settings: settings, image: images.1, count: 1}" />
+	{book.description}
+	</p>
+	<p>
+		<f:render partial="Image" arguments="{settings: settings, image: images.2, count: 2}" />
+		<strong><f:translate key="zustandsbeschreibung" />:</strong> {book.damage}
+	</p>
+	<p>
+		<strong><f:translate key="listFieldHeader_help" /></strong> {book.help}
+	</p>
+	<p>
+		<strong><f:translate key="restaurierungskosten" />:</strong> {book.price} Euro
+	</p>
+	<p>
+		###IWANT###
+	</p>
+	<p>
+		###BACK###
+	</p>
+</div>
