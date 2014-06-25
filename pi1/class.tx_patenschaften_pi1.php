@@ -427,7 +427,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 	/**
 	 * Uebersicht ueber die Kategorien
 	 *
-	 * @param array Kategorien
+	 * @param array $kategorien
 	 * @return string Kategorienliste
 	 */
 	private function generiereCatUebersicht($kategorien) {
@@ -548,6 +548,8 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 
 			$bilder = explode(',', $row['bilder']);
 
+			$replacedImageMarkers = array();
+
 			// Bilder aufbereiten
 			$i = 1;
 			foreach ($bilder as $bild) {
@@ -563,10 +565,17 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 
 				$wrap = "<a href='" . $this->bilderpfad . $bild . "' rel='shadowbox[preview]' title='" . $row['titel'] . "'>|</a>";
 				$markerArray['###IMG' . $i . '###'] = $this->cObj->linkWrap($this->cObj->IMAGE($bildconf), $wrap);
+				$replacedImageMarkers[] = $i;
 				$i++;
 			}
 			// falls mal nur zwei Bilder vorhanden sind
 			(count($bilder) == 2) ? $markerArray['###IMG3###'] = '' : null;
+
+			if (count($replacedImageMarkers) < 2) {
+				$markerArray['###IMG2###'] = '';
+				$markerArray['###IMG3###'] = '';
+			}
+
 			$content = $this->cObj->substituteMarkerArrayCached($template, $markerArray);
 		}
 		return $content;
