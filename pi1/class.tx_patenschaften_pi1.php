@@ -30,35 +30,64 @@
  * @package    TYPO3
  * @subpackage    tx_patenschaften
  */
-class tx_patenschaften_pi1 extends tslib_pibase {
+class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
-	var $prefixId = 'tx_patenschaften_pi1'; // Same as class name
-	var $scriptRelPath = 'pi1/class.tx_patenschaften_pi1.php'; // Path to this script relative to the extension dir.
-	var $extKey = 'patenschaften'; // The extension key.
-	var $pi_checkHash = true;
+	public  $prefixId = 'tx_patenschaften_pi1'; // Same as class name
+	public $scriptRelPath = 'pi1/class.tx_patenschaften_pi1.php'; // Path to this script relative to the extension dir.
+	public $extKey = 'patenschaften'; // The extension key.
+	public $pi_checkHash = true;
 
 	public $conf;
-	private $templateFile;
-	private $buchtabelle;
-	private $kattabelle;
-	private $bilderpfad;
-	private $bilderbreite;
+	protected $templateFile;
+	protected $buchtabelle;
+	protected $kattabelle;
+	protected $bilderpfad;
+
+	protected $pageID;
+
+	/**
+	 * @var int
+	 */
+	protected $bilderbreite;
 
 	/**
 	 * ID der Kategorie der bereits uebernommenen Patenschaften
 	 *
 	 * @var int
 	 */
-	private $uebernommeneId = 5;
+	protected $uebernommeneId = 5;
+
+	/**
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected $db;
+
+	/**
+	 * @var int
+	 */
+	protected $bilderhoehe;
+
+	/**
+	 * @var int
+	 */
+	protected $catBilderhoehe;
+
+	/**
+	 * @var int
+	 */
+	protected $catBilderbreite;
 
 	/**
 	 * Main method of your PlugIn
 	 *
 	 * @param string $content : The content of the PlugIn
 	 * @param array $conf : The PlugIn Configuration
-	 * @return The content that should be displayed on the website
+	 * @return string The content that should be displayed on the website
 	 */
-	function main($content, $conf) {
+	public function main($content, $conf) {
+
+		$this->db = $GLOBALS['TYPO3_DB'];
+
 		// Setting the TypoScript passed to this function in $this->conf
 		$this->conf = $conf;
 		$this->pi_setPiVarDefaults();
@@ -86,14 +115,14 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 		$this->conf['templateFile'] ? $this->templateFile = $this->cObj->fileResource($this->conf['templateFile']) : $this->templateFile = $this->cObj->fileResource('EXT:' . $this->extKey . '/Resources/Private/Templates/patenschaften.html');
 
 		// GP Parameter
-		$parameter = t3lib_div::_GP('tx_patenschaften_pi1');
+		$parameter = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_patenschaften_pi1');
 
 		// was will der user?
 		$form = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'formwahl');
 
 		switch ($form) {
 			case 'listdetail':
-				if (t3lib_utility_Math::canBeInterpretedAsInteger($parameter['showBook'])) {
+				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($parameter['showBook'])) {
 					$content = $this->singleView($parameter['showBook']);
 				} elseif (isset($parameter['category'])) {
 					$content = $this->catView($parameter['category']);
@@ -108,7 +137,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 				$content = $this->getPatenschaften();
 				break;
 			case 'uebernommene':
-				if (t3lib_utility_Math::canBeInterpretedAsInteger($parameter['showBook'])) {
+				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($parameter['showBook'])) {
 					$content = $this->getUebernommenePatenschaft($parameter['showBook']);
 				} else {
 					$content = $this->uebernommenePatenschaftListView();
@@ -131,7 +160,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 		$listWrap = $patenschaftenconf['listWrap'];
 
 		// Query fuer alle Paten
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$res = $this->db->exec_SELECTquery(
 				'DISTINCT(sponsorship)',
 				$this->buchtabelle,
 				' sponsorship !="" AND sponsorship NOT LIKE "%genannt%"',
@@ -139,7 +168,8 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 				'sponsorship ASC',
 				''
 		);
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		$sponsoren = '';
+		while ($row = $this->db->sql_fetch_assoc($res)) {
 			$sponsoren .= $this->cObj->wrap(implode(" ", explode(";", $row['sponsorship'])), $singleWrap);
 		}
 		// Wrappen das ganze noch mit dem was im TS festgelegt ist
@@ -195,6 +225,9 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 		$markerArray['###UEBERSICHT###'] = '';
 
 		$numberOfCategories = count($kategorien) - 1; // abzuegl. uebernommene
+
+		$inhalt = '';
+
 		foreach ($kategorien as $kategorie) {
 			// Marker mit Inhalten fuellen
 			if ($kategorie['uid'] != $this->uebernommeneId) {
@@ -210,7 +243,6 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 
 		return $daten;
 	}
-
 
 	/**
 	 * Generiert die Kategorienansicht
@@ -228,9 +260,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 		$template = $this->cObj->getSubpart($this->templateFile, '###KATLIST###');
 
 		$markerArray['###UEBERSICHT###'] = '';
-
-		// abzueglich bereits uebernommener
-		$numberOfCategories = count($kategorien) - 1;
+		$inhalt = '';
 		foreach ($kategorien as $kategorie) {
 			// Marker mit Inhalten fuellen
 			if ($kategorie['uid'] == $category && $kategorie['uid'] != $this->uebernommeneId) {
@@ -263,14 +293,14 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 		$object = new tx_patenschaften_pi1();
 		$object->setTableNames();
 		$object->pi_loadLL();
-		$tsParser = t3lib_div::makeInstance('t3lib_TSparser');
+		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TSparser');
 		foreach ($GLOBALS['TSFE']->tmpl->constants as $value) {
 			$tsParser->parse($value, $matchObj = '');
 		}
 		$object->pageID = array($tsParser->setup['newListID'], $tsParser->setup['takenListID']);
 
 		$kategorien = $object->getAllKategorien();
-		$parameter = t3lib_div::_GP('tx_patenschaften_pi1');
+		$parameter = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_patenschaften_pi1');
 
 		if (in_array($GLOBALS['TSFE']->id, $object->pageID)) {
 			if (!isset($parameter['showBook'])) {
@@ -291,7 +321,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 				$bookID = $parameter['showBook'];
 				if ($GLOBALS['TSFE']->id == $object->pageID[1]) $where = "`sponsorship` != '' AND ";
 				else                                            $where = "`sponsorship` = '' AND ";
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				$res = $this->db->exec_SELECTquery(
 						'*',
 						$object->buchtabelle,
 						$where . "`deleted` = 0 AND `hidden` = 0",
@@ -299,7 +329,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 						'`search` ASC , `author` ASC',
 						''
 				);
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				while ($row = $this->db->sql_fetch_assoc($res)) {
 					if ($row['uid'] == $bookID) $id = $i;
 					$books[$i++] = $row;
 				}
@@ -323,7 +353,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 	 */
 	public function hookPicFunc(&$tmp, &$obj) {
 		$object = new tx_patenschaften_pi1();
-		$tsParser = t3lib_div::makeInstance('t3lib_TSparser');
+		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TSparser');
 		foreach ($GLOBALS['TSFE']->tmpl->constants as $value) {
 			$tsParser->parse($value, $matchObj = '');
 		}
@@ -346,14 +376,14 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 	 * @param int $catId
 	 * @return string
 	 */
-	private function getAllBuecherFromCat($catId) {
+	protected function getAllBuecherFromCat($catId) {
 
 		// Subpart des Templates waehlen
 		$template = $this->cObj->getSubpart($this->templateFile, '###BUCHUEBERBLICK###');
 
 		// DB Abfrage nach Buechern der Kategorie
 		if ($catId != $this->uebernommeneId) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			$res = $this->db->exec_SELECTquery(
 					'*',
 					$this->buchtabelle,
 					' FIND_IN_SET(' . $catId . ',category) AND deleted=0 AND hidden=0 AND sponsorship="" ',
@@ -362,7 +392,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 					''
 			);
 		} else {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			$res = $this->db->exec_SELECTquery(
 					'*',
 					$this->buchtabelle,
 					' deleted=0 AND hidden=0 AND sponsorship != "" ',
@@ -371,7 +401,8 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 					''
 			);
 		}
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		$inhalt = '';
+		while ($row = $this->db->sql_fetch_assoc($res)) {
 
 			// Parameter fuer den Link
 			$urlParameters = array(
@@ -394,7 +425,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 								'height' => $this->catBilderhoehe,
 						),
 				);
-				$bildconf['stdWrap.']['addParams.']['alt'] = 'Bild ' . $i . ' zum Titel ' . $row['titel'];
+				$bildconf['stdWrap.']['addParams.']['alt'] = 'Bild zum Titel ' . $row['titel'];
 				$bildconf['stdWrap.']['addParams.']['class'] = "picture" . " " . "nr0";
 
 				$wrap = "<a href='" . $this->bilderpfad . $bild . "' rel='shadowbox' title='" . $row['titel'] . "'>|</a>";
@@ -418,7 +449,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 
 		$template = $this->cObj->getSubpart($this->templateFile, '###BUCHANSICHT###');
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$res = $this->db->exec_SELECTquery(
 				'*',
 				$this->buchtabelle,
 				'deleted=0 AND hidden=0 AND uid=' . $id,
@@ -426,7 +457,8 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 				'',
 				''
 		);
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		$content = '';
+		while ($row = $this->db->sql_fetch_assoc($res)) {
 			$urlParameters = array(
 					'tx_powermail_pi1[uid' . $this->conf['selectID'] . ']' => $row['uid']
 			);
@@ -475,12 +507,15 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 	/**
 	 * Ausgabe der uebernommenen Patenschaften
 	 *
+	 * @param int $id
+	 *
 	 * @return string
 	 */
 	private function getUebernommenePatenschaft($id) {
+		$content = '';
 		$template = $this->cObj->getSubpart($this->templateFile, '###UEBERNOMMENE###');
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$res = $this->db->exec_SELECTquery(
 				'*', //WHAT
 				$this->buchtabelle,
 				' deleted=0 AND hidden=0 AND uid=' . $id,
@@ -488,7 +523,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 				'',
 				''
 		);
-		if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		if ($row = $this->db->sql_fetch_assoc($res)) {
 			$urlParameters = array(
 					'tx_powermail_pi1[uid' . $this->conf['selectID'] . ']' => $row['uid']
 			);
@@ -542,7 +577,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 	 * @return string Kategorien
 	 */
 	private function getKategorie($kat) {
-
+		$kategorien = '';
 		try {
 			$kats = explode(',', $kat);
 			foreach ($kats as $kategorie) {
@@ -562,7 +597,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 	 * @return string Kategorien
 	 */
 	private function leseKatAusDb($id) {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$res = $this->db->exec_SELECTquery(
 				'catname',
 				$this->kattabelle,
 				' deleted=0 AND hidden = 0 AND uid =' . $id,
@@ -570,7 +605,8 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 				'catname ASC',
 				''
 		);
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		$cat = '';
+		while ($row = $this->db->sql_fetch_assoc($res)) {
 			$cat .= $row['catname'];
 		}
 		return $cat;
@@ -594,7 +630,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 		 * 8 => "Naturwissenschaften und Medizin"
 		 */
 		$kategorien = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$res = $this->db->exec_SELECTquery(
 				'uid, catname ',
 				$this->kattabelle,
 				' deleted=0 AND hidden=0',
@@ -602,7 +638,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 				'uid ASC',
 				''
 		);
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($row = $this->db->sql_fetch_assoc($res)) {
 			$kategorien[] = $row;
 		}
 		return $kategorien;
@@ -614,7 +650,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 	 * @return string
 	 */
 	private function getAvailableBookSelection() {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$res = $this->db->exec_SELECTquery(
 				'uid, titel',
 				$this->buchtabelle,
 				' deleted=0 AND hidden=0 AND sponsorship = "" ',
@@ -624,7 +660,7 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 		);
 		$selection = "<label>" . $this->pi_getLL('formFieldHeader_sponsorship') . ":</label>\n";
 		$selection .= "<select>\n";
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+		while ($row = $this->db->sql_fetch_assoc($res)) {
 			$selection .= '<option title="' . $row['titel'] . '">' . $row['titel'] . "</option>\n";
 		}
 		$selection .= "</select>";
@@ -636,4 +672,3 @@ class tx_patenschaften_pi1 extends tslib_pibase {
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/patenschaften/pi1/class.tx_patenschaften_pi1.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/patenschaften/pi1/class.tx_patenschaften_pi1.php']);
 }
-?>

@@ -1,10 +1,13 @@
 <?php
+namespace Subugoe\Patenschaften\Domain\Model;
+
+
 /* * *************************************************************
  *  Copyright notice
  *
  *  (c) 2014 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
  *      Goettingen State Library
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,11 +26,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
- * Description 
+ * Description
  */
-class Tx_Patenschaften_Domain_Model_Category extends Tx_Extbase_DomainObject_AbstractEntity {
+class Category extends AbstractEntity {
 
 	/**
 	 * @var string
