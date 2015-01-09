@@ -1,5 +1,5 @@
 <f:groupedFor each="{books}" as="book" groupBy="category" groupKey="category.title">
-	<f:debug>{book}</f:debug>
+	<h2>{book.category.title}</h2>
 	<ul>
 		<f:for each="{book}" as="booka">
 			{label}
