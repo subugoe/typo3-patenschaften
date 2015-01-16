@@ -291,9 +291,11 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public function hookFunc(&$tmp, &$obj) {
 		// Liste aller Kategorien
 		$object = new tx_patenschaften_pi1();
+		$object->db = $GLOBALS['TYPO3_DB'];
 		$object->setTableNames();
 		$object->pi_loadLL();
-		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TSparser');
+		/** @var \\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $tsParser */
+		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 		foreach ($GLOBALS['TSFE']->tmpl->constants as $value) {
 			$tsParser->parse($value, $matchObj = '');
 		}
@@ -353,7 +355,9 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function hookPicFunc(&$tmp, &$obj) {
 		$object = new tx_patenschaften_pi1();
-		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TSparser');
+		$object->db = $GLOBALS['TYPO3_DB'];
+		/** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $tsParser */
+		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 		foreach ($GLOBALS['TSFE']->tmpl->constants as $value) {
 			$tsParser->parse($value, $matchObj = '');
 		}
@@ -658,10 +662,10 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				' search ASC , author ASC',
 				''
 		);
-		$selection = "<label>" . $this->pi_getLL('formFieldHeader_sponsorship') . ":</label>\n";
-		$selection .= "<select>\n";
+		$selection = "<label>" . $this->pi_getLL('formFieldHeader_sponsorship') . ":</label>" . PHP_EOL;
+		$selection .= "<select>" . PHP_EOL;
 		while ($row = $this->db->sql_fetch_assoc($res)) {
-			$selection .= '<option title="' . $row['titel'] . '">' . $row['titel'] . "</option>\n";
+			$selection .= '<option title="' . $row['titel'] . '">' . $row['titel'] . "</option>" . PHP_EOL;
 		}
 		$selection .= "</select>";
 		return $selection;
