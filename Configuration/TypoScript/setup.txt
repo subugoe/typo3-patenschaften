@@ -23,59 +23,6 @@ plugin.tx_patenschaften_pi1.patenschaften {
 	listWrap = <ul>|</ul>
 }
 
-
-
-# CSS Styles fuer bestimmte Sachen:
-plugin.tx_patenschaften_pi1._CSS_DEFAULT_STYLE (
-	.tx-patenschaften-pi1 .picture {
-		border: 1px solid #CCC;
-		margin: 4px;
-		padding: 3px;
-		background-color: white;
-		-webkit-border-radius: 2px;
-		-moz-border-radius: 2px;
-		border-radius: 2px;
-		-webkit-box-shadow: 2px 4px 15px -2px black;
-		-moz-box-shadow: 2px 4px 15px -2px black;
-		box-shadow: 2px 4px 15px -2px black;
-	}
-
-	.tx-patenschaften-pi1 .nr0 {
-		float: left;
-		margin-right: 14px;
-	}
-
-	.tx-patenschaften-pi1 .nr1 {
-		float: right;
-		margin-left: 8px;
-	}
-
-	.tx-patenschaften-pi1 .listHighlight {
-		border-top: 1px solid #CCC;
-		padding: 12px 10px 4px 8px;
-		position: relative;	
-		left: -8px;
-	}	
-
-	.tx-patenschaften-pi1 .illuminate {
-		background-color: #EEE;
-	}	
-
-	/* Changes to pmkshadow-class to fit to patenschaft design */
-	#sb-wrapper-inner {
-      border: 1px solid #CCC;
-      padding: 6px;
-      background-color: white;
-      -webkit-border-radius: 2px !important;
-      -moz-border-radius: 2px !important;
-      border-radius: 2px !important;
-      -webkit-box-shadow: 2px 4px 15px -2px black;
-      -moz-box-shadow: 2px 4px 15px -2px black;
-      box-shadow: 2px 4px 15px -2px black;
-    }
-
-)
-
 plugin.tx_patenschaften {
 	persistence {
 		storagePid < plugin.tx_patenschaften_pi1.pidInList
