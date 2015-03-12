@@ -4,7 +4,7 @@
  *
  *  (c) 2014 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
  *      Goettingen State Library
- *
+ *  
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,15 +27,15 @@
 /**
  * Unit tests for ImageSplitViewHelper
  */
-class ImageSplitViewHelperTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
+class Tx_Patenschaften_Tests_Unit_ViewHelpers_ImageSplitViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var Subugoe\Patenschaften\ViewHelpers\ImageSplitViewHelper
+	 * @var Tx_Patenschaften_ViewHelpers_ImageSplitViewHelper
 	 */
 	protected $fixture;
 
 	public function setUp() {
-		$this->fixture = $this->getAccessibleMock('Subugoe\\Patenschaften\\ViewHelpers\\ImageSplitViewHelper');
+		$this->fixture = $this->getAccessibleMock('Tx_Patenschaften_ViewHelpers_ImageSplitViewHelper');
 	}
 
 }

@@ -294,8 +294,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$object->db = $GLOBALS['TYPO3_DB'];
 		$object->setTableNames();
 		$object->pi_loadLL();
-		/** @var \\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $tsParser */
-		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TSparser');
 		foreach ($GLOBALS['TSFE']->tmpl->constants as $value) {
 			$tsParser->parse($value, $matchObj = '');
 		}
@@ -355,9 +354,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function hookPicFunc(&$tmp, &$obj) {
 		$object = new tx_patenschaften_pi1();
-		$object->db = $GLOBALS['TYPO3_DB'];
-		/** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $tsParser */
-		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TSparser');
 		foreach ($GLOBALS['TSFE']->tmpl->constants as $value) {
 			$tsParser->parse($value, $matchObj = '');
 		}

@@ -1,11 +1,11 @@
 <?php
-namespace Subugoe\Patenschaften\Controller;
+
 /* * *************************************************************
  *  Copyright notice
  *
  *  (c) 2014 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
  *      Goettingen State Library
- *
+ *  
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,23 +24,22 @@ namespace Subugoe\Patenschaften\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-use Subugoe\Patenschaften\Domain\Model\Book;
 
 /**
- * Description
+ * Description 
  */
-class IndexController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class Tx_Patenschaften_Controller_IndexController extends Tx_Extbase_MVC_Controller_ActionController {
 
 	/**
-	 * @var \Subugoe\Patenschaften\Domain\Repository\BookRepository
+	 * @var Tx_Patenschaften_Domain_Repository_BookRepository
 	 * @inject
 	 */
 	protected $bookRepository;
 
 	/**
-	 * @param \Subugoe\Patenschaften\Domain\Model\Book $book
+	 * @param Tx_Patenschaften_Domain_Model_Book $book
 	 */
-	public function detailAction(Book $book) {
+	public function detailAction(Tx_Patenschaften_Domain_Model_Book $book) {
 		$singleBook = $this->bookRepository->findByUid($book);
 		$this->view->assign('book', $singleBook);
 	}
