@@ -32,7 +32,7 @@
  */
 class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
-	public  $prefixId = 'tx_patenschaften_pi1'; // Same as class name
+	public $prefixId = 'tx_patenschaften_pi1'; // Same as class name
 	public $scriptRelPath = 'pi1/class.tx_patenschaften_pi1.php'; // Path to this script relative to the extension dir.
 	public $extKey = 'patenschaften'; // The extension key.
 	public $pi_checkHash = true;
@@ -78,6 +78,11 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	protected $catBilderbreite;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Page\PageRenderer
+	 */
+	protected $pageRenderer;
+
+	/**
 	 * Main method of your PlugIn
 	 *
 	 * @param string $content : The content of the PlugIn
@@ -87,6 +92,10 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public function main($content, $conf) {
 
 		$this->db = $GLOBALS['TYPO3_DB'];
+
+		/** @var \TYPO3\CMS\Core\Page\PageRenderer pageRenderer */
+		$this->pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+		$this->pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('patenschaften') . 'Resources/Public/Css/patenschaften.css');
 
 		// Setting the TypoScript passed to this function in $this->conf
 		$this->conf = $conf;
@@ -294,7 +303,8 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$object->db = $GLOBALS['TYPO3_DB'];
 		$object->setTableNames();
 		$object->pi_loadLL();
-		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TSparser');
+		/** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $tsParser */
+		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 		foreach ($GLOBALS['TSFE']->tmpl->constants as $value) {
 			$tsParser->parse($value, $matchObj = '');
 		}
@@ -320,8 +330,11 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			} else {
 				$i = 0;
 				$bookID = $parameter['showBook'];
-				if ($GLOBALS['TSFE']->id == $object->pageID[1]) $where = "`sponsorship` != '' AND ";
-				else                                            $where = "`sponsorship` = '' AND ";
+				if ($GLOBALS['TSFE']->id == $object->pageID[1]) {
+					$where = "`sponsorship` != '' AND ";
+				} else {
+					$where = "`sponsorship` = '' AND ";
+				}
 				$res = $this->db->exec_SELECTquery(
 						'*',
 						$object->buchtabelle,
@@ -354,7 +367,8 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 */
 	public function hookPicFunc(&$tmp, &$obj) {
 		$object = new tx_patenschaften_pi1();
-		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_TSparser');
+		/** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $tsParser */
+		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 		foreach ($GLOBALS['TSFE']->tmpl->constants as $value) {
 			$tsParser->parse($value, $matchObj = '');
 		}
@@ -412,7 +426,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 			// Marker ersetzen
 			$markerArray['###AUTHOR###'] = ($row['author'] != "") ? $row['author'] . "<br />" : "";
-			$markerArray['###TITELLINK###'] = $this->pi_linkToPage($row['titel'], 2274, '',$urlParameters, 1);
+			$markerArray['###TITELLINK###'] = $this->pi_linkToPage($row['titel'], 2274, '', $urlParameters, 1);
 			$markerArray['###KURZBESCHREIBUNG###'] = nl2br($row['caption']);
 			$markerArray['###RESTAURIERUNGSKOSTEN###'] = $this->pi_getLL('restaurierungskosten');
 			$markerArray['###PREIS###'] = $row['price'];
@@ -477,7 +491,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$markerArray['###HEADER_HELP###'] = $this->pi_getLL('listFieldHeader_help');
 			$markerArray['###HELP###'] = $row['help'];
 			$markerArray['###BACK###'] = $this->pi_linkToPage($this->pi_getLL('back', 'Back'), $this->conf['newListID']);
-			$markerArray['###IWANT###'] = $this->pi_linkToPage($this->pi_getLL('iwant'), $this->conf['formPage'], $target, $urlParameters);
+			$markerArray['###IWANT###'] = $this->pi_linkToPage($this->pi_getLL('iwant'), $this->conf['formPage'], '', $urlParameters);
 
 			$bilder = explode(',', $row['bilder']);
 

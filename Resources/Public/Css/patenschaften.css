@@ -1,0 +1,28 @@
+.tx-patenschaften-pi1 .picture {
+  border: 1px solid #ccc;
+  margin: 4px;
+  padding: 3px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 2px 4px 15px -2px #000; }
+.tx-patenschaften-pi1 .nr0 {
+  float: left;
+  margin-right: 14px; }
+.tx-patenschaften-pi1 .nr1 {
+  float: right;
+  margin-left: 8px; }
+.tx-patenschaften-pi1 .listHighlight {
+  border-top: 1px solid #ccc;
+  padding: 12px 10px 4px 8px;
+  position: relative;
+  left: -8px; }
+.tx-patenschaften-pi1 .illuminate {
+  background-color: #e6e6e6; }
+
+/* Changes to pmkshadow-class to fit to patenschaft design */
+#sb-wrapper-inner {
+  border: 1px solid #ccc;
+  padding: 6px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 2px 4px 15px -2px #000; }
