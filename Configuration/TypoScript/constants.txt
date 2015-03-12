@@ -1,0 +1,15 @@
+plugin.tx_patenschaften {
+	CMD = listView
+	pidInList = 1530
+	formPage = 1505
+	selectID = 88
+	newListID = 1504
+	takenListID = 1507
+	detailPageUid = 2274
+	recursive =
+	imageFolder = fileadmin/media/bilder/patenschaften/
+	imageWidth = 180px
+	imageHeight = 180px
+	catImageWidth = 60px
+	catImageHeight = 60px
+}

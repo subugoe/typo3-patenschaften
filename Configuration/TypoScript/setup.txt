@@ -1,10 +1,11 @@
 plugin.tx_patenschaften_pi1 {
 	CMD = listView
-	pidInList = {$pidInList}
-	formPage = {$formPage}
-	selectID = {$selectID}
-	newListID = {$newListID}
-	takenListID = {$takenListID}
+	pidInList = {$plugin.tx_patenschaften.pidInList}
+	formPage = {$plugin.tx_patenschaften.formPage}
+	selectID = {$plugin.tx_patenschaften.selectID}
+	newListID = {$plugin.tx_patenschaften.newListID}
+	takenListID = {$plugin.tx_patenschaften.takenListID}
+	detailPageUid = {$plugin.tx_patenschaften.detailPageUid}
 	recursive =
 	imageFolder = fileadmin/media/bilder/patenschaften/
 	imageWidth = 180px
@@ -21,37 +22,4 @@ plugin.tx_patenschaften_pi1.listView {
 plugin.tx_patenschaften_pi1.patenschaften {
 	singleWrap = <li>|</li>
 	listWrap = <ul>|</ul>
-}
-
-plugin.tx_patenschaften {
-	persistence {
-		storagePid < plugin.tx_patenschaften_pi1.pidInList
-		classes {
-			Tx_Patenschaften_Domain_Model_Book {
-				mapping {
-					tableName = tx_patenschaften_buecher
-					recordType = Tx_Patenschaften_Domain_Model_Book
-					columns {
-						titel.mapOnProperty = title
-						bilder.mapOnProperty = images
-					}
-				}
-			}
-			Tx_Patenschaften_Domain_Model_Category {
-				mapping {
-					tableName = tx_patenschaften_kategorien
-					recordType = Tx_Patenschaften_Domain_Model_Category
-					columns {
-						catname.mapOnProperty = title
-					}
-				}
-			}
-		}
-	}
-	settings {
-		imageFolder < plugin.tx_patenschaften_pi1.imageFolder
-		imageWidth < plugin.tx_patenschaften_pi1.imageWidth
-		imageHeight < plugin.tx_patenschaften_pi1.imageHeight
-	}
-	_CSS_DEFAULT_STYLE < plugin.tx_patenschaften_pi1._CSS_DEFAULT_STYLE
 }

@@ -38,11 +38,30 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public $pi_checkHash = true;
 
 	public $conf;
+
+	/**
+	 * @var string
+	 */
 	protected $templateFile;
+
+	/**
+	 * @var string
+	 */
 	protected $buchtabelle;
+
+	/**
+	 * @var string
+	 */
 	protected $kattabelle;
+
+	/**
+	 * @var string
+	 */
 	protected $bilderpfad;
 
+	/**
+	 * @var int
+	 */
 	protected $pageID;
 
 	/**
@@ -421,12 +440,12 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 			// Parameter fuer den Link
 			$urlParameters = array(
-					'tx_patenschaften_detail[book]' => $row['uid'],
+					'tx_patenschaften_pi1[showBook]' => $row['uid'],
 			);
 
 			// Marker ersetzen
 			$markerArray['###AUTHOR###'] = ($row['author'] != "") ? $row['author'] . "<br />" : "";
-			$markerArray['###TITELLINK###'] = $this->pi_linkToPage($row['titel'], 2274, '', $urlParameters, 1);
+			$markerArray['###TITELLINK###'] = $this->pi_linkTP($row['titel'], $urlParameters, 1);
 			$markerArray['###KURZBESCHREIBUNG###'] = nl2br($row['caption']);
 			$markerArray['###RESTAURIERUNGSKOSTEN###'] = $this->pi_getLL('restaurierungskosten');
 			$markerArray['###PREIS###'] = $row['price'];
