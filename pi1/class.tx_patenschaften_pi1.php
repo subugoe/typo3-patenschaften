@@ -319,15 +319,19 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public function hookFunc(&$tmp, &$obj) {
 		// Liste aller Kategorien
 		$object = new tx_patenschaften_pi1();
-		$object->db = $GLOBALS['TYPO3_DB'];
+		$this->db = $GLOBALS['TYPO3_DB'];
 		$object->setTableNames();
 		$object->pi_loadLL();
 		/** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $tsParser */
-		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 		foreach ($GLOBALS['TSFE']->tmpl->constants as $value) {
 			$tsParser->parse($value, $matchObj = '');
 		}
-		$object->pageID = array($tsParser->setup['newListID'], $tsParser->setup['takenListID']);
+
+		$object->pageID = array(
+				$tsParser->setup['plugin.']['tx_patenschaften.']['newListID'],
+				$tsParser->setup['plugin.']['tx_patenschaften.']['takenListID']
+		);
 
 		$kategorien = $object->getAllKategorien();
 		$parameter = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_patenschaften_pi1');
@@ -369,7 +373,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 				$tmp = '<li>';
 				$tmp .= $obj->pi_linkTP($object->pi_getLL('infobox_previousbook'), array('tx_patenschaften_pi1[showBook]' => $books[$id - 1]['uid']), 1);
-				$tmp .= '</li>' . "\n" . '<li>';
+				$tmp .= '</li>' . PHP_EOL . '<li>';
 				$tmp .= $obj->pi_linkTP($object->pi_getLL('infobox_nextbook'), array('tx_patenschaften_pi1[showBook]' => $books[$id + 1]['uid']), 1);
 				$tmp .= '</li>';
 			}
@@ -509,8 +513,16 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$markerArray['###DAMAGE###'] = $row['damage'];
 			$markerArray['###HEADER_HELP###'] = $this->pi_getLL('listFieldHeader_help');
 			$markerArray['###HELP###'] = $row['help'];
-			$markerArray['###BACK###'] = $this->pi_linkToPage($this->pi_getLL('back', 'Back'), $this->conf['newListID']);
-			$markerArray['###IWANT###'] = $this->pi_linkToPage($this->pi_getLL('iwant'), $this->conf['formPage'], '', $urlParameters);
+			$markerArray['###BACK###'] = $this->pi_linkToPage(
+					$this->pi_getLL('back', 'Back'),
+					$this->conf['newListID']
+			);
+			$markerArray['###IWANT###'] = $this->pi_linkToPage(
+					$this->pi_getLL('iwant'),
+					$this->conf['formPage'],
+					'',
+					$urlParameters
+			);
 
 			$bilder = explode(',', $row['bilder']);
 
@@ -550,7 +562,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$template = $this->cObj->getSubpart($this->templateFile, '###UEBERNOMMENE###');
 
 		$res = $this->db->exec_SELECTquery(
-				'*', //WHAT
+				'*',
 				$this->buchtabelle,
 				' deleted=0 AND hidden=0 AND uid=' . $id,
 				'',
@@ -574,9 +586,12 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			$markerArray['###DAMAGE###'] = $row['damage'];
 			$markerArray['###HEADER_HELP###'] = $this->pi_getLL('listFieldHeader_help');
 			$markerArray['###HELP###'] = $row['help'];
-			$markerArray['###BACK###'] = $this->pi_linkToPage($this->pi_getLL('back', 'Back'), $this->conf['takenListID']);
+			$markerArray['###BACK###'] = $this->pi_linkToPage(
+					$this->pi_getLL('back', 'Back'),
+					$this->conf['takenListID']
+			);
 			$markerArray['###HEADER_SPONSOR###'] = $this->pi_getLL('listFieldHeader_sponsorship');
-			$markerArray['###SPONSOR###'] = implode(" ", explode(";", $row['sponsorship']));
+			$markerArray['###SPONSOR###'] = implode(' ', explode(';', $row['sponsorship']));
 
 			$bilder = explode(',', $row['bilder']);
 
@@ -652,6 +667,8 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	 * @return array
 	 */
 	private function getAllKategorien() {
+
+		$this->db = $GLOBALS['TYPO3_DB'];
 		/*
 		 * 0 => ohne
 		 * 1 => "Schöne Literatur",
