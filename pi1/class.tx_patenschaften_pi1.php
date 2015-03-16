@@ -338,12 +338,12 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 		if (in_array($GLOBALS['TSFE']->id, $object->pageID)) {
 			if (!isset($parameter['showBook'])) {
-				if ($GLOBALS['TSFE']->id == $object->pageID[0]) {
+				if ($GLOBALS['TSFE']->id == $object->pageID[0] || $GLOBALS['TSFE']->id == $object->pageID[1]) {
 					$tmp = '';
 					foreach ($kategorien as $kategorie) {
 						if ($kategorie['uid'] != $object->uebernommeneId) {
 							$tmp .= '<li>';
-							// Anker
+							// anchor
 							$uebersicht = $obj->pi_getPageLink($GLOBALS['TSFE']->id) . '?tx_patenschaften_pi1[category]=' . $kategorie['uid'];
 							$tmp .= $obj->cObj->getTypoLink($kategorie['catname'], $uebersicht);
 							$tmp .= '</li>';
@@ -391,11 +391,14 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public function hookPicFunc(&$tmp, &$obj) {
 		$object = new tx_patenschaften_pi1();
 		/** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $tsParser */
-		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
+		$tsParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
 		foreach ($GLOBALS['TSFE']->tmpl->constants as $value) {
 			$tsParser->parse($value, $matchObj = '');
 		}
-		$object->pageID = array($tsParser->setup['newListID'], $tsParser->setup['takenListID']);
+		$object->pageID = array(
+				$tsParser->setup['plugin.']['tx_patenschaften.']['newListID'],
+				$tsParser->setup['plugin.']['tx_patenschaften.']['takenListID']
+		);
 	}
 
 	/**
@@ -613,7 +616,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				$i++;
 			}
 			// falls mal nur zwei Bilder vorhanden sind
-			(count($bilder) == 2) ? $markerArray['###IMG3###'] = '' : null;
+			(count($bilder) == 2) ? $markerArray['###IMG3###'] = '' : NULL;
 			$content = $this->cObj->substituteMarkerArrayCached($template, $markerArray);
 		}
 		return $content;
