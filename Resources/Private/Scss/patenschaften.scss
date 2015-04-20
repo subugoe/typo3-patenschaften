@@ -1,0 +1,45 @@
+$border-color: #ccc;
+$background-color: #fff;
+$shadow-color: #000;
+$shadow-dimensions: 2px 4px 15px -2px;
+
+.tx-patenschaften-pi1 {
+	.picture {
+		border: 1px solid $border-color;
+		margin: 4px;
+		padding: 3px;
+		background-color: $background-color;
+		border-radius: 2px;
+		box-shadow: $shadow-dimensions $shadow-color;
+	}
+
+	.nr0 {
+		float: left;
+		margin-right: 14px;
+	}
+
+	.nr1 {
+		float: right;
+		margin-left: 8px;
+	}
+
+	.listHighlight {
+		border-top: 1px solid $border-color;
+		padding: 12px 10px 4px 8px;
+		position: relative;
+		left: -8px;
+	}
+
+	.illuminate {
+		background-color: darken($background-color, 10%);
+	}
+}
+
+/* Changes to pmkshadow-class to fit to patenschaft design */
+#sb-wrapper-inner {
+	border: 1px solid $border-color;
+	padding: 6px;
+	background-color: $background-color;
+	border-radius: 2px;
+	box-shadow: $shadow-dimensions $shadow-color;
+}

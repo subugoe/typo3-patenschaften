@@ -1,0 +1,25 @@
+plugin.tx_patenschaften_pi1 {
+	CMD = listView
+	pidInList = {$plugin.tx_patenschaften.pidInList}
+	formPage = {$plugin.tx_patenschaften.formPage}
+	selectID = {$plugin.tx_patenschaften.selectID}
+	newListID = {$plugin.tx_patenschaften.newListID}
+	takenListID = {$plugin.tx_patenschaften.takenListID}
+	detailPageUid = {$plugin.tx_patenschaften.detailPageUid}
+	recursive =
+	imageFolder = fileadmin/media/bilder/patenschaften/
+	imageWidth = 180px
+	imageHeight = 180px
+	catImageWidth = 60px
+	catImageHeight = 60px
+}
+
+plugin.tx_patenschaften_pi1.listView {
+	results_at_a_time = 10
+	maxPages = 3
+}
+
+plugin.tx_patenschaften_pi1.patenschaften {
+	singleWrap = <li>|</li>
+	listWrap = <ul>|</ul>
+}
