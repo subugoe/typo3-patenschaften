@@ -40,7 +40,6 @@
 			<antcall target="phpcs"/>
 			<antcall target="phpdox"/>
 			<antcall target="phploc"/>
-			<antcall target="jslint"/>
 		</parallel>
 	</target>
 	<target name="pdepend"
