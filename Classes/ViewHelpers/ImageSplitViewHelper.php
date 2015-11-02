@@ -1,10 +1,12 @@
 <?php
+
+namespace Subugoe\Patenschaften\ViewHelpers;
 /* * *************************************************************
  *  Copyright notice
  *
  *  (c) 2014 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
  *      Goettingen State Library
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,20 +26,21 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-/**
- * Description 
- */
-class Tx_Patenschaften_ViewHelpers_ImageSplitViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-	/**
-	 * @param string $values
-	 * @return string
-	 */
-	public function render($values) {
-		if (strpos($values, '') !== -1 ) {
-			$valueMap = explode(',', $values, 3);
-			$this->templateVariableContainer->add('images', $valueMap);
-		}
-	}
+class ImageSplitViewHelper extends AbstractViewHelper
+{
+
+    /**
+     * @param string $values
+     * @return string
+     */
+    public function render($values)
+    {
+        if (strpos($values, '') !== -1) {
+            $valueMap = explode(',', $values, 3);
+            $this->templateVariableContainer->add('images', $valueMap);
+        }
+    }
 
 }

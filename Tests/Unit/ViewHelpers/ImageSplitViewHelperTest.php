@@ -1,10 +1,13 @@
 <?php
+
+namespace Subugoe\Patenschaften\Tests\ViewHelpers;
+
 /* * *************************************************************
  *  Copyright notice
  *
  *  (c) 2014 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
  *      Goettingen State Library
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,19 +26,23 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use Subugoe\Patenschaften\ViewHelpers\ImageSplitViewHelper;
+use TYPO3\CMS\Core\Tests\BaseTestCase;
 
 /**
  * Unit tests for ImageSplitViewHelper
  */
-class Tx_Patenschaften_Tests_Unit_ViewHelpers_ImageSplitViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class ImageSplitViewHelperTest extends BaseTestCase
+{
 
-	/**
-	 * @var Tx_Patenschaften_ViewHelpers_ImageSplitViewHelper
-	 */
-	protected $fixture;
+    /**
+     * @var ImageSplitViewHelper
+     */
+    protected $fixture;
 
-	public function setUp() {
-		$this->fixture = $this->getAccessibleMock('Tx_Patenschaften_ViewHelpers_ImageSplitViewHelper');
-	}
+    public function setUp()
+    {
+        $this->fixture = $this->getAccessibleMock(ImageSplitViewHelper::class);
+    }
 
 }
