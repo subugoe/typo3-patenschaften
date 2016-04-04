@@ -1,11 +1,13 @@
 <?php
 
+namespace Subugoe\Patenschaften\Domain\Model;
+
 /* * *************************************************************
  *  Copyright notice
  *
  *  (c) 2014 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
  *      Goettingen State Library
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,237 +27,261 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-/**
- * Description
- */
-class Tx_Patenschaften_Domain_Model_Book extends Tx_Extbase_DomainObject_AbstractEntity {
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-	/**
-	 * @var string
-	 */
-	protected $title;
+class Book extends AbstractEntity
+{
 
-	/**
-	 * @var string
-	 */
-	protected $author;
+    /**
+     * @var string
+     */
+    protected $title;
 
-	/**
-	 * @var string
-	 */
-	protected $search;
+    /**
+     * @var string
+     */
+    protected $author;
 
-	/**
-	 * @var string
-	 */
-	protected $caption;
+    /**
+     * @var string
+     */
+    protected $search;
 
-	/**
-	 * @var string
-	 */
-	protected $signature;
+    /**
+     * @var string
+     */
+    protected $caption;
 
-	/**
-	 * @var string
-	 */
-	protected $description;
+    /**
+     * @var string
+     */
+    protected $signature;
 
-	/**
-	 * @var string
-	 */
-	protected $price;
+    /**
+     * @var string
+     */
+    protected $description;
 
-	/**
-	 * @var string
-	 */
-	protected $damage;
+    /**
+     * @var string
+     */
+    protected $price;
 
-	/**
-	 * @var string
-	 */
-	protected $help;
+    /**
+     * @var string
+     */
+    protected $damage;
 
-	/**
-	 * @var string
-	 */
-	protected $sponsorship;
+    /**
+     * @var string
+     */
+    protected $help;
 
-	/**
-	 * @var Tx_Patenschaften_Domain_Model_Category
-	 */
-	protected $category;
+    /**
+     * @var string
+     */
+    protected $sponsorship;
 
-	/**
-	 * @var string
-	 */
-	protected $images;
+    /**
+     * @var \Tx_Patenschaften_Domain_Model_Category
+     */
+    protected $category;
 
-	/**
-	 * @return string
-	 */
-	public function getAuthor() {
-		return $this->author;
-	}
+    /**
+     * @var string
+     */
+    protected $images;
 
-	/**
-	 * @param string $author
-	 */
-	public function setAuthor($author) {
-		$this->author = $author;
-	}
+    /**
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getImages() {
-		return $this->images;
-	}
+    /**
+     * @param string $author
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
 
-	/**
-	 * @param string $bilder
-	 */
-	public function setImages($bilder) {
-		$this->images = $bilder;
-	}
+    /**
+     * @return string
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getCaption() {
-		return $this->caption;
-	}
+    /**
+     * @param string $bilder
+     */
+    public function setImages($bilder)
+    {
+        $this->images = $bilder;
+    }
 
-	/**
-	 * @param string $caption
-	 */
-	public function setCaption($caption) {
-		$this->caption = $caption;
-	}
+    /**
+     * @return string
+     */
+    public function getCaption()
+    {
+        return $this->caption;
+    }
 
-	/**
-	 * @return Tx_Patenschaften_Domain_Model_Category
-	 */
-	public function getCategory() {
-		return $this->category;
-	}
+    /**
+     * @param string $caption
+     */
+    public function setCaption($caption)
+    {
+        $this->caption = $caption;
+    }
 
-	/**
-	 * @param Tx_Patenschaften_Domain_Model_Category $category
-	 */
-	public function setCategory($category) {
-		$this->category = $category;
-	}
+    /**
+     * @return \Tx_Patenschaften_Domain_Model_Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getDamage() {
-		return $this->damage;
-	}
+    /**
+     * @param \Tx_Patenschaften_Domain_Model_Category $category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
 
-	/**
-	 * @param string $damage
-	 */
-	public function setDamage($damage) {
-		$this->damage = $damage;
-	}
+    /**
+     * @return string
+     */
+    public function getDamage()
+    {
+        return $this->damage;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getDescription() {
-		return $this->description;
-	}
+    /**
+     * @param string $damage
+     */
+    public function setDamage($damage)
+    {
+        $this->damage = $damage;
+    }
 
-	/**
-	 * @param string $description
-	 */
-	public function setDescription($description) {
-		$this->description = $description;
-	}
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getHelp() {
-		return $this->help;
-	}
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
 
-	/**
-	 * @param string $help
-	 */
-	public function setHelp($help) {
-		$this->help = $help;
-	}
+    /**
+     * @return string
+     */
+    public function getHelp()
+    {
+        return $this->help;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getPrice() {
-		return $this->price;
-	}
+    /**
+     * @param string $help
+     */
+    public function setHelp($help)
+    {
+        $this->help = $help;
+    }
 
-	/**
-	 * @param string $price
-	 */
-	public function setPrice($price) {
-		$this->price = $price;
-	}
+    /**
+     * @return string
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getSearch() {
-		return $this->search;
-	}
+    /**
+     * @param string $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
 
-	/**
-	 * @param string $search
-	 */
-	public function setSearch($search) {
-		$this->search = $search;
-	}
+    /**
+     * @return string
+     */
+    public function getSearch()
+    {
+        return $this->search;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getSignature() {
-		return $this->signature;
-	}
+    /**
+     * @param string $search
+     */
+    public function setSearch($search)
+    {
+        $this->search = $search;
+    }
 
-	/**
-	 * @param string $signature
-	 */
-	public function setSignature($signature) {
-		$this->signature = $signature;
-	}
+    /**
+     * @return string
+     */
+    public function getSignature()
+    {
+        return $this->signature;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getSponsorship() {
-		return $this->sponsorship;
-	}
+    /**
+     * @param string $signature
+     */
+    public function setSignature($signature)
+    {
+        $this->signature = $signature;
+    }
 
-	/**
-	 * @param string $sponsorship
-	 */
-	public function setSponsorship($sponsorship) {
-		$this->sponsorship = $sponsorship;
-	}
+    /**
+     * @return string
+     */
+    public function getSponsorship()
+    {
+        return $this->sponsorship;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
+    /**
+     * @param string $sponsorship
+     */
+    public function setSponsorship($sponsorship)
+    {
+        $this->sponsorship = $sponsorship;
+    }
 
-	/**
-	 * @param string $titel
-	 */
-	public function setTitle($titel) {
-		$this->title = $titel;
-	}
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $titel
+     */
+    public function setTitle($titel)
+    {
+        $this->title = $titel;
+    }
 
 }

@@ -1,11 +1,13 @@
 <?php
 
+namespace Subugoe\Patenschaften\Domain\Repository;
+
 /* * *************************************************************
  *  Copyright notice
  *
  *  (c) 2014 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
  *      Goettingen State Library
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,19 +27,20 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-/**
- * Description
- */
-class Tx_Patenschaften_Domain_Repository_BookRepository extends Tx_Extbase_Persistence_Repository {
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
-	public function findNonTakenBooks() {
-		$query = $this->createQuery();
-		 $query->matching(
-				$query->logicalAND(
-						$query->like('sponsorship', '%genannt%')
-				)
-		)->execute();
+class BookRepository extends Repository
+{
 
-		return $query->execute();
-	}
+    public function findNonTakenBooks()
+    {
+        $query = $this->createQuery();
+        $query->matching(
+            $query->logicalAND(
+                $query->like('sponsorship', '%genannt%')
+            )
+        )->execute();
+
+        return $query->execute();
+    }
 }
