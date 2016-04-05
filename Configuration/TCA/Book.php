@@ -49,6 +49,14 @@ $TCA['tx_patenschaften_buecher'] = [
                 'default' => '0'
             ]
         ],
+        't3ver_label' => [
+            'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
+            'config' => [
+                'type' => 'input',
+                'size' => '30',
+                'max' => '30',
+            ]
+        ],
         'starttime' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
