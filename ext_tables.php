@@ -23,6 +23,8 @@ $TCA['tx_patenschaften_kategorien'] = [
         ],
         'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Category.php',
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'icon_tx_patenschaften_kategorien.gif',
+        'versioningWS' => true,
+        'origUid' => 't3_origuid',
     ],
 ];
 
@@ -45,6 +47,8 @@ $TCA['tx_patenschaften_buecher'] = [
         ],
         'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Book.php',
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'icon_tx_patenschaften_buecher.gif',
+        'versioningWS' => true,
+        'origUid' => 't3_origuid',
     ],
 ];
 

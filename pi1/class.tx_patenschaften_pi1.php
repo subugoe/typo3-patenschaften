@@ -689,7 +689,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                         if ($kategorie['uid'] != $object->uebernommeneId) {
                             $tmp .= '<li>';
                             // anchor
-                            $uebersicht = $obj->pi_getPageLink($GLOBALS['TSFE']->id) . '?tx_patenschaften_pi1[category]=' . $kategorie['uid'];
+                            $uebersicht = $obj->cObj->getTypoLink_URL($GLOBALS['TSFE']->id) . '?tx_patenschaften_pi1[category]=' . $kategorie['uid'];
                             $tmp .= $obj->cObj->getTypoLink($kategorie['catname'], $uebersicht);
                             $tmp .= '</li>';
                         }
