@@ -92,11 +92,6 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected $uebernommeneId = 5;
 
     /**
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected $db;
-
-    /**
      * @var int
      */
     protected $bilderhoehe;
@@ -117,6 +112,14 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected $pageRenderer;
 
     /**
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
+    }
+
+    /**
      * Main method of your PlugIn
      *
      * @param string $content : The content of the PlugIn
@@ -125,8 +128,6 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     public function main($content, $conf)
     {
-
-        $this->db = $GLOBALS['TYPO3_DB'];
 
         /** @var \TYPO3\CMS\Core\Page\PageRenderer pageRenderer */
         $this->pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
@@ -206,7 +207,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         $template = $this->cObj->getSubpart($this->templateFile, '###BUCHANSICHT###');
 
-        $res = $this->db->exec_SELECTquery(
+        $res = $this->getDatabaseConnection()->exec_SELECTquery(
             '*',
             $this->buchtabelle,
             'deleted=0 AND hidden=0 AND uid=' . $id,
@@ -215,7 +216,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             ''
         );
         $content = '';
-        while ($row = $this->db->sql_fetch_assoc($res)) {
+        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
             $urlParameters = [
                 'tx_powermail_pi1[uid' . $this->conf['selectID'] . ']' => $row['uid']
             ];
@@ -299,7 +300,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     private function leseKatAusDb($id)
     {
-        $res = $this->db->exec_SELECTquery(
+        $res = $this->getDatabaseConnection()->exec_SELECTquery(
             'catname',
             $this->kattabelle,
             ' deleted=0 AND hidden = 0 AND uid =' . $id,
@@ -308,7 +309,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             ''
         );
         $cat = '';
-        while ($row = $this->db->sql_fetch_assoc($res)) {
+        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
             $cat .= $row['catname'];
         }
         return $cat;
@@ -359,8 +360,6 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function getAllKategorien()
     {
-
-        $this->db = $GLOBALS['TYPO3_DB'];
         /*
          * 0 => ohne
          * 1 => "Schöne Literatur",
@@ -373,7 +372,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
          * 8 => "Naturwissenschaften und Medizin"
          */
         $kategorien = [];
-        $res = $this->db->exec_SELECTquery(
+        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'uid, catname ',
             $this->kattabelle,
             ' deleted=0 AND hidden=0',
@@ -381,7 +380,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             'uid ASC',
             ''
         );
-        while ($row = $this->db->sql_fetch_assoc($res)) {
+        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $kategorien[] = $row;
         }
         return $kategorien;
@@ -401,7 +400,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         // DB Abfrage nach Buechern der Kategorie
         if ($catId != $this->uebernommeneId) {
-            $res = $this->db->exec_SELECTquery(
+            $res = $this->getDatabaseConnection()->exec_SELECTquery(
                 '*',
                 $this->buchtabelle,
                 ' FIND_IN_SET(' . $catId . ',category) AND deleted=0 AND hidden=0 AND sponsorship="" ',
@@ -410,7 +409,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 ''
             );
         } else {
-            $res = $this->db->exec_SELECTquery(
+            $res = $this->getDatabaseConnection()->exec_SELECTquery(
                 '*',
                 $this->buchtabelle,
                 ' deleted=0 AND hidden=0 AND sponsorship != "" ',
@@ -420,7 +419,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             );
         }
         $inhalt = '';
-        while ($row = $this->db->sql_fetch_assoc($res)) {
+        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
 
             // Parameter fuer den Link
             $urlParameters = [
@@ -500,7 +499,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     private function getAvailableBookSelection()
     {
-        $res = $this->db->exec_SELECTquery(
+        $res = $this->getDatabaseConnection()->exec_SELECTquery(
             'uid, titel',
             $this->buchtabelle,
             ' deleted=0 AND hidden=0 AND sponsorship = "" ',
@@ -510,7 +509,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         );
         $selection = "<label>" . $this->pi_getLL('formFieldHeader_sponsorship') . ":</label>" . PHP_EOL;
         $selection .= "<select>" . PHP_EOL;
-        while ($row = $this->db->sql_fetch_assoc($res)) {
+        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
             $selection .= '<option title="' . $row['titel'] . '">' . $row['titel'] . "</option>" . PHP_EOL;
         }
         $selection .= "</select>";
@@ -530,7 +529,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $listWrap = $patenschaftenconf['listWrap'];
 
         // Query fuer alle Paten
-        $res = $this->db->exec_SELECTquery(
+        $res = $this->getDatabaseConnection()->exec_SELECTquery(
             'DISTINCT(sponsorship)',
             $this->buchtabelle,
             ' sponsorship !="" AND sponsorship NOT LIKE "%genannt%"',
@@ -539,7 +538,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             ''
         );
         $sponsoren = '';
-        while ($row = $this->db->sql_fetch_assoc($res)) {
+        while ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
             $sponsoren .= $this->cObj->wrap(implode(" ", explode(";", $row['sponsorship'])), $singleWrap);
         }
         // Wrappen das ganze noch mit dem was im TS festgelegt ist
@@ -559,7 +558,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $content = '';
         $template = $this->cObj->getSubpart($this->templateFile, '###UEBERNOMMENE###');
 
-        $res = $this->db->exec_SELECTquery(
+        $res = $this->getDatabaseConnection()->exec_SELECTquery(
             '*',
             $this->buchtabelle,
             ' deleted=0 AND hidden=0 AND uid=' . $id,
@@ -567,7 +566,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             '',
             ''
         );
-        if ($row = $this->db->sql_fetch_assoc($res)) {
+        if ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res)) {
             $urlParameters = [
                 'tx_powermail_pi1[uid' . $this->conf['selectID'] . ']' => $row['uid']
             ];
@@ -664,7 +663,6 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
         // Liste aller Kategorien
         $object = new tx_patenschaften_pi1();
-        $this->db = $GLOBALS['TYPO3_DB'];
         $object->setTableNames();
         $object->pi_loadLL();
         /** @var \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser $tsParser */
@@ -703,7 +701,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 } else {
                     $where = "`sponsorship` = '' AND ";
                 }
-                $res = $this->db->exec_SELECTquery(
+                $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
                     '*',
                     $object->buchtabelle,
                     $where . "`deleted` = 0 AND `hidden` = 0",
@@ -711,7 +709,7 @@ class tx_patenschaften_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     '`search` ASC , `author` ASC',
                     ''
                 );
-                while ($row = $this->db->sql_fetch_assoc($res)) {
+                while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                     if ($row['uid'] == $bookID) {
                         $id = $i;
                     }
