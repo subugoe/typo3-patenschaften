@@ -11,9 +11,9 @@ if (!defined('TYPO3_MODE')) {
 ');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig('
 
-	# ***************************************************************************************
-	# CONFIGURATION of RTE in table "tx_patenschaften_buecher", field "description"
-	# ***************************************************************************************
+# ***************************************************************************************
+# CONFIGURATION of RTE in table "tx_patenschaften_buecher", field "description"
+# ***************************************************************************************
 RTE.config.tx_patenschaften_buecher.description {
   hidePStyleItems = H1, H4, H5, H6
   proc.exitHTMLparser_db=1
@@ -29,8 +29,8 @@ RTE.config.tx_patenschaften_buecher.description {
     'list_type', 0);
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScript($_EXTKEY, 'setup', '
-	tt_content.shortcut.20.0.conf.tx_patenschaften_buecher = < plugin.' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getCN($_EXTKEY) . '_pi1
-	tt_content.shortcut.20.0.conf.tx_patenschaften_buecher.CMD = singleView
+    tt_content.shortcut.20.0.conf.tx_patenschaften_buecher = < plugin.' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getCN($_EXTKEY) . '_pi1
+    tt_content.shortcut.20.0.conf.tx_patenschaften_buecher.CMD = singleView
 ', 43);
 
 $TYPO3_CONF_VARS['EXTCONF']['nkwsubmenu']['extendTOC'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/pi1/class.tx_patenschaften_pi1.php:tx_patenschaften_pi1->hookFunc';

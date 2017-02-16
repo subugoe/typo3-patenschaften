@@ -15,6 +15,7 @@ $TCA['tx_patenschaften_buecher'] = [
             'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
             'config' => [
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => [
@@ -183,6 +184,7 @@ $TCA['tx_patenschaften_buecher'] = [
             'label' => 'LLL:EXT:patenschaften/locallang_db.xml:tx_patenschaften_buecher.category',
             'config' => [
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_patenschaften_kategorien',
                 'foreign_table_where' => 'AND tx_patenschaften_kategorien.pid=###CURRENT_PID### ORDER BY tx_patenschaften_kategorien.uid',
                 'size' => 3,
